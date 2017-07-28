@@ -1,5 +1,4 @@
 <?php
-
     /**
      * 字符串包含汉字数和英文数,表情会被当作汉字
      * @param string $string
@@ -14,7 +13,6 @@
         $enLength = mb_strlen($string) - $chLength;
         return ['ch'=>$chLength, 'en'=>$enLength];
     }
-
 
     /**
      * 获得二维数组中某一个key的值的数组
@@ -36,7 +34,6 @@
         }
         return $ret;
     }
-
 
     /**
      * 将二维数组某一维的值当做key
@@ -66,7 +63,6 @@
         return $ret;
     }
 
-
     /**
      * 正则匹配手机号
      * @param string $area 区号
@@ -87,7 +83,6 @@
         }
     }
 
-
     /**
      * 过滤文本，并将文本中的图片标签替换为 【图片】
      * @param string $content
@@ -102,7 +97,6 @@
         $content = preg_replace('/<\/?(img|IMG)[^><]*>/i', '[图片]', $content);
         return $content;
     }
-
 
     /**
      * 时间转换
@@ -128,10 +122,9 @@
         }
     }
 
-
     /**
-     * 替换回答的内容
-     * @param string $str 回答内容
+     * 替换文本的内容
+     * @param string $str 文本内容
      * @param bool $replaceImg 是否替换图片为文字[图片]
      * @return array
      */
