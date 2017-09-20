@@ -21,13 +21,13 @@ class CompileClass
     {
         $this->template = $template;
         $this->compile = $compileFile;
-        $this->content = file_put_contents($template);
+        $this->content = file_get_contents($template);
         if ($config['php_turn'] === false) {
             $this->T_P[] = "#<\? (=|php |)(.+?)\?>#is";
             $this->T_R[] = "&lt;? \\1 \\2? &gt";
         }
         $this->T_P[] = "#\{\\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\}#";
-        $this->T_P[] = "#\{(loop|foreach)\\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\}#i";
+        $this->T_P[] = "#\{(loop|foreach)\\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]* )}#i";
         $this->T_P[] = "#\{\/(loop|foreach|if)}#i";
         $this->T_P[] = "#\{([K|V])\}#";
         $this->T_P[] = "#\{if (.*?)\}#i";
@@ -36,7 +36,7 @@ class CompileClass
         $this->T_P[] = "#\{ (\#|\*)(.*?)(\#|\* )\}#";
 
         $this->T_R[] = "<?php echo \$this->value['\\1'];?>";
-        $this->T_R[] = "<?php foreach (array)\$this->value['\\2'] as \$K => \$V {?>";
+        $this->T_R[] = "<?php foreach ((array)\$this->value['\\2'] as \$K => \$V) {?>";
         $this->T_R[] = "<?php } ?>";
         $this->T_R[] = "<?php echo \$\\1;?>";
         $this->T_R[] = "<?php if(\\1){ ?>";
@@ -46,9 +46,34 @@ class CompileClass
 
     }
 
-    public function compile($source,$destFile)
+
+    public function compile()
     {
-        file_put_contents($destFile,file_get_contents($source));
+        $this->c_var2();
+        $this->c_staticFile();
+        file_put_contents($this->compile,$this->content);
     }
 
+    public function c_var2()
+    {
+        $this->content = preg_replace($this->T_P,$this->T_R,$this->content);
+    }
+
+    /**
+     * 对加人的JavaScript静态文件的解析
+     */
+    public function c_staticFile()
+    {
+        $this->content = preg_replace('#\{\!(.*?)\!\}#','<script src = \\1>'.'?t = '.time().'></script>',$this->content);
+    }
+
+    public function __set($name, $value)
+    {
+        $this->$name = $value;
+    }
+
+    public function __get($name)
+    {
+        return $this->$name;
+    }
 }

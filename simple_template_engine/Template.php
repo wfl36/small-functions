@@ -13,7 +13,7 @@ class Template
         'compiledir' => 'cache/',   //设置编译后存放的目录
         'cache_htm' => false,   //是否需要编译成静态的HTML文件
         'suffix_cache' => '.htm',   //设置编译文件的后缀
-        'cache_time' => 7200,    //多长时间自动更新
+        'cache_time' => 2000,    //多长时间自动更新
         'php_turn' => true, //是否支持原生PHP代码
         'cache_control' => 'control.dat',
         'debug' => false
@@ -30,8 +30,14 @@ class Template
         $this->debug['begin'] = microtime(true);
         $this->arrayConfig = $arrayConfig + $this->arrayConfig;
         $this->getPath();
+        if (!is_dir($this->arrayConfig['templateDir'])) {
+            exit("template dir isn't found");
+        }
+        if(!is_dir($this->arrayConfig['compiledir'])){
+            mkdir($this->arrayConfig['compiledir'],0770,true);
+        }
         include('CompileClass.php');
-        $this->compileTool = new CompileClass();
+
     }
 
     /**
@@ -153,7 +159,7 @@ class Template
         if(!is_file($this->path())){
             exit('找不到对应的模板');
         }
-        $compileFile = $this->arrayConfig['compiledir'].'/'.md5($file).'.php';
+        $compileFile = $this->arrayConfig['compiledir'].md5($file).'.php';
         $cacheFile = $this->arrayConfig['compiledir'].md5($file).'.htm';
         if ($this->reCache($file) === false) {
             $this->debug['cached'] = 'false';
