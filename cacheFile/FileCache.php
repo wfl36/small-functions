@@ -146,6 +146,7 @@ class FileCache
      * @param $file  文件名
      * @param $life 缓存周期
      * @return bool true or false
+     *
      */
     public function isExpired($file,$life)
     {
