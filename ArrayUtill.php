@@ -1,8 +1,6 @@
 <?php
 
 /**
- * author      : wangfenglei
- * createTime  : 2017/9/11 11:33
  * description : 数组相关处理方法
  */
 class ArrayUtill
@@ -60,7 +58,7 @@ class ArrayUtill
         array_multisort($key_array,$sort,$multi_array);
         return $multi_array;
     }
-
+  
     /**
      * 根据二维数组相同值来分组
      * @param $arr
@@ -196,3 +194,4 @@ class ArrayUtill
         return $array;
     }
 }
+
