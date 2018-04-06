@@ -18,6 +18,6 @@ $vac = new Application\Web\Hoover();
 $url = strip_tags($_GET['url'] ?? DEFAULT_URL);
 $tag = strip_tags($_GET['tag'] ?? DEFAULT_TAG);
 
-var_dump($vac->getTags($url, $tag));exit();
+
 echo 'dump of tags : '.PHP_EOL;
 var_dump($vac->getTags($url, $tag));
